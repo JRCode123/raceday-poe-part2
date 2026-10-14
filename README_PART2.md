@@ -61,8 +61,8 @@ This creates the `RaceDay` database with all seven tables matching the Part 1 SQ
 ```bash
 dotnet run
 ```
-The API starts at `https://localhost:5001` (or `http://localhost:5000`).
-Swagger UI opens automatically at the root URL: `http://localhost:5000`
+The API starts at `https://localhost:55293/`.
+Swagger UI opens automatically at the root URL: `https://localhost:55293/`
 
 ### 5. Run unit tests
 ```bash
