@@ -1,0 +1,80 @@
+# ============================================================
+# RaceDay Part 2 — CI/CD Workflow
+# Student: Junior | IIE Rosebank College
+#
+# This workflow runs on every push and pull request.
+# It builds the API project and runs all unit tests.
+# A green checkmark here confirms the code compiles and tests pass.
+# ============================================================
+
+name: RaceDay Part 2 - Build and Test
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - part2
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  build-and-test:
+    name: Build API and Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Step 1: Check out the repository ────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Step 2: Set up .NET 8 SDK ────────────────────────────────────────────
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # ── Step 3: Restore NuGet packages (API project) ────────────────────────
+      - name: Restore API dependencies
+        run: dotnet restore RaceDay.API/RaceDay.API.csproj
+
+      # ── Step 4: Build the API project ────────────────────────────────────────
+      - name: Build RaceDay.API
+        run: dotnet build RaceDay.API/RaceDay.API.csproj --no-restore --configuration Release
+
+      # ── Step 5: Restore NuGet packages (Test project) ───────────────────────
+      - name: Restore Test dependencies
+        run: dotnet restore RaceDay.Tests/RaceDay.Tests.csproj
+
+      # ── Step 6: Build the Test project ───────────────────────────────────────
+      - name: Build RaceDay.Tests
+        run: dotnet build RaceDay.Tests/RaceDay.Tests.csproj --no-restore --configuration Release
+
+      # ── Step 7: Run all unit tests ───────────────────────────────────────────
+      # Tests use an in-memory database — no SQL Server connection needed.
+      - name: Run unit tests
+        run: dotnet test RaceDay.Tests/RaceDay.Tests.csproj --no-build --configuration Release --verbosity normal
+
+      # ── Step 8: Confirm /docs folder still intact from Part 1 ────────────────
+      - name: Verify /docs folder from Part 1
+        run: |
+          echo "Checking that Part 1 planning documents are still present..."
+          if [ ! -d "docs" ]; then
+            echo "ERROR: /docs folder is missing!"
+            exit 1
+          fi
+          echo "docs/ folder found."
+          ls docs/
+
+      # ── Step 9: Summary ──────────────────────────────────────────────────────
+      - name: Print success summary
+        run: |
+          echo ""
+          echo "======================================================="
+          echo "  RaceDay Part 2 CI — ALL CHECKS PASSED"
+          echo "  API built successfully"
+          echo "  All unit tests passed"
+          echo "  /docs folder verified"
+          echo "======================================================="
