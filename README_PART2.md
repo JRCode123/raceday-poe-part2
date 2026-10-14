@@ -151,7 +151,8 @@ The workflow:
 4. Runs all unit tests (in-memory DB, no SQL Server needed)
 5. Verifies the `/docs` folder from Part 1 still exists
 
-**CI/CD Screenshot:** *(add screenshot here after first green build)*
+**CI/CD Screenshot:** *(<img width="1917" height="936" alt="image" src="https://github.com/user-attachments/assets/1b7e8a9a-2ce4-44f9-9dc8-47ef7dd45ffd" />
+)*
 
 ---
 
